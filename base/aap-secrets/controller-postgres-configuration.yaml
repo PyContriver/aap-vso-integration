@@ -1,0 +1,34 @@
+---
+# Source: awx-operator/roles/installer/templates/secrets/postgres_secret.yaml.j2
+# Keys confirmed from operator template: host, username, password, database, port, type
+# type: unmanaged → operator skips creating postgres pod (managed_database = False)
+# Vault path: aap/<CLUSTER_NAME>/database/controller
+# Vault keys: host, username, password
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: automation-controller-postgres-configuration
+  namespace: ansible-automation-platform
+spec:
+  vaultAuthRef: vault-secrets-operator-system/vault-auth
+  mount: VAULT_MOUNT_PLACEHOLDER
+  type: kv-v2
+  path: aap/CLUSTER_NAME/database/controller
+  refreshAfter: 1m
+  destination:
+    name: automation-controller-postgres-configuration
+    create: true
+    transformation:
+      templates:
+        host:
+          text: '{{- .Secrets.host -}}'
+        username:
+          text: '{{- .Secrets.username -}}'
+        password:
+          text: '{{- .Secrets.password -}}'
+        database:
+          text: 'automationcontroller'
+        port:
+          text: '5432'
+        type:
+          text: 'unmanaged'

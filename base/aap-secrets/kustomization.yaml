@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+sortOptions:
+  order: fifo
+resources:
+  # Controller secrets
+  - controller-secret-key.yaml
+  - controller-broadcast-websocket.yaml
+  - controller-admin-password.yaml
+  - controller-postgres-configuration.yaml
+  # Hub secrets
+  - hub-admin-password.yaml
+  - hub-postgres-configuration.yaml
+  - hub-db-fields-encryption.yaml
+  # Platform (gateway) secrets
+  - platform-admin-password.yaml
+  - platform-postgres-configuration.yaml
+  # EDA secrets
+  - eda-admin-password.yaml
+  - eda-postgres-configuration.yaml
+  - eda-db-fields-encryption.yaml

@@ -1,0 +1,98 @@
+---
+# AnsibleAutomationPlatform CR — full VSO integration
+# All secret fields confirmed from operator source:
+#   awx-operator/roles/installer/defaults/main.yml
+#   galaxy-operator/roles/common/defaults/main.yml
+#   eda-server-operator/roles/eda/defaults/main.yml
+#
+# Every secret field below references a K8s Secret pre-created by VSO.
+# The operator pattern: if CR field set AND secret exists → use it, no generation.
+apiVersion: aap.ansible.com/v1alpha1
+kind: AnsibleAutomationPlatform
+metadata:
+  name: automation-platform
+  namespace: ansible-automation-platform
+spec:
+  no_log: false
+  image_pull_policy: IfNotPresent
+
+  # ── Platform-level secrets ─────────────────────────────────────────────────
+  # Admin password for the gateway UI
+  admin_password_secret: automation-platform-admin-password
+
+  # External postgres for the gateway component
+  database:
+    database_secret: automation-platform-postgres-configuration
+
+  # ── Automation Controller ──────────────────────────────────────────────────
+  controller:
+    name: automation-controller
+    disabled: false
+
+    # Confirmed from: awx-operator/roles/installer/defaults/main.yml
+    # Key in secret: 'secret_key' (32-char alphanumeric)
+    secret_key_secret: automation-controller-secret-key
+
+    # Confirmed from: awx-operator/roles/installer/defaults/main.yml
+    # Key in secret: 'secret' (32-char alphanumeric)
+    broadcast_websocket_secret: automation-controller-broadcast-websocket
+
+    # Confirmed from: awx-operator/roles/installer/defaults/main.yml
+    # Key in secret: 'password'
+    admin_password_secret: automation-controller-admin-password
+
+    # Confirmed from: awx-operator/roles/installer/defaults/main.yml + database_configuration.yml
+    # Keys: host, username, password, database, port, type: unmanaged
+    # type: unmanaged → managed_database = False → no postgres pod created
+    postgres_configuration_secret: automation-controller-postgres-configuration
+
+    auto_upgrade: true
+    create_preload_data: true
+    garbage_collect_secrets: false
+    ingress_type: none
+    service_type: NodePort
+    replicas: 1
+    no_log: true
+
+  # ── Automation Hub ─────────────────────────────────────────────────────────
+  hub:
+    name: automation-hub
+    disabled: false
+
+    # Confirmed from: galaxy-operator/roles/common/defaults/main.yml
+    admin_password_secret: automation-hub-admin-password
+
+    # Confirmed from: galaxy-operator/roles/common/defaults/main.yml
+    # Keys: host, username, password, database, port, type: unmanaged
+    postgres_configuration_secret: automation-hub-postgres-configuration
+
+    # Confirmed from: galaxy-operator/roles/common/tasks/db_fields_encryption_configuration.yml
+    # Key in secret: 'database_fields.symmetric.key' (Fernet key)
+    db_fields_encryption_secret: automation-hub-db-fields-encryption
+
+    storage_type: file
+    file_storage_storage_class: nfs-rwx
+    file_storage_access_mode: ReadWriteMany
+    ingress_type: none
+    no_log: true
+
+  # ── Event-Driven Ansible ───────────────────────────────────────────────────
+  eda:
+    disabled: false
+    name: automation-eda
+
+    # Confirmed from: eda-server-operator/roles/eda/defaults/main.yml
+    admin_password_secret: automation-eda-admin-password
+
+    # Confirmed from: eda-server-operator/roles/eda/defaults/main.yml
+    # Key in secret: 'database_fields.symmetric.key' (Fernet key)
+    db_fields_encryption_secret: automation-eda-db-fields-encryption
+
+    database:
+      database_secret: automation-eda-postgres-configuration
+
+  # ── Lightspeed (disabled) ──────────────────────────────────────────────────
+  lightspeed:
+    disabled: true
+
+  service_type: NodePort

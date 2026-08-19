@@ -1,0 +1,123 @@
+---
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: aap-vso-config-replacements
+
+replacements:
+
+  # ── VaultConnection address ────────────────────────────────────────────────
+  - source:
+      kind: ConfigMap
+      name: config
+      namespace: vault-secrets-operator-system
+      fieldPath: data.VAULT_ADDR
+    targets:
+      - select:
+          name: vault-connection
+          kind: VaultConnection
+        fieldPaths: [spec.address]
+
+  # ── VaultAuth kubernetes auth mount ───────────────────────────────────────
+  - source:
+      kind: ConfigMap
+      name: config
+      namespace: vault-secrets-operator-system
+      fieldPath: data.VAULT_K8S_AUTH_MOUNT
+    targets:
+      - select:
+          name: vault-auth
+          kind: VaultAuth
+        fieldPaths: [spec.mount]
+
+  # ── VaultAuth role name ────────────────────────────────────────────────────
+  - source:
+      kind: ConfigMap
+      name: config
+      namespace: vault-secrets-operator-system
+      fieldPath: data.VAULT_K8S_ROLE
+    targets:
+      - select:
+          name: vault-auth
+          kind: VaultAuth
+        fieldPaths: [spec.kubernetes.role]
+
+  # ── VAULT_MOUNT into all VaultStaticSecrets ────────────────────────────────
+  - source:
+      kind: ConfigMap
+      name: config
+      namespace: vault-secrets-operator-system
+      fieldPath: data.VAULT_MOUNT
+    targets:
+      - select:
+          namespace: ansible-automation-platform
+          kind: VaultStaticSecret
+        fieldPaths: [spec.mount]
+
+  # ── CLUSTER_NAME into all VaultStaticSecret paths (segment index 1) ────────
+  - source:
+      kind: ConfigMap
+      name: config
+      namespace: vault-secrets-operator-system
+      fieldPath: data.CLUSTER_NAME
+    targets:
+      - select:
+          name: automation-controller-secret-key
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-controller-broadcast-websocket
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-controller-admin-password
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-controller-postgres-configuration
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-hub-admin-password
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-hub-postgres-configuration
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-hub-db-fields-encryption
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-platform-admin-password
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-platform-postgres-configuration
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-eda-admin-password
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-eda-postgres-configuration
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }
+      - select:
+          name: automation-eda-db-fields-encryption
+          kind: VaultStaticSecret
+        fieldPaths: [spec.path]
+        options: { delimiter: '/', index: 1 }

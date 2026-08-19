@@ -1,0 +1,17 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+  namespace: vault-secrets-operator-system
+spec:
+  method: kubernetes
+  mount: VAULT_K8S_AUTH_MOUNT_PLACEHOLDER
+  kubernetes:
+    role: VAULT_K8S_ROLE_PLACEHOLDER
+    serviceAccount: vso-auth-sa
+    tokenExpirationSeconds: 600
+  vaultConnectionRef: vault-connection
+  allowedNamespaces:
+    - ansible-automation-platform
+    - vault-secrets-operator-system

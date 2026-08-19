@@ -1,0 +1,23 @@
+---
+# Source: eda-server-operator — same key format as Hub
+# Key name: 'database_fields.symmetric.key' (Fernet key)
+# Vault path: aap/<CLUSTER_NAME>/encryption/eda
+# Vault key: database_fields_encryption_key
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: automation-eda-db-fields-encryption
+  namespace: ansible-automation-platform
+spec:
+  vaultAuthRef: vault-secrets-operator-system/vault-auth
+  mount: VAULT_MOUNT_PLACEHOLDER
+  type: kv-v2
+  path: aap/CLUSTER_NAME/encryption/eda
+  refreshAfter: 1m
+  destination:
+    name: automation-eda-db-fields-encryption
+    create: true
+    transformation:
+      templates:
+        database_fields.symmetric.key:
+          text: '{{- .Secrets.database_fields_encryption_key -}}'

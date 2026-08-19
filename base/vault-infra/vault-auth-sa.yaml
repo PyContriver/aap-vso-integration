@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vso-auth-sa
+  namespace: vault-secrets-operator-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vso-auth-sa
+  namespace: ansible-automation-platform

@@ -1,0 +1,23 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: automation-eda-postgres-configuration
+  namespace: ansible-automation-platform
+spec:
+  vaultAuthRef: vault-secrets-operator-system/vault-auth
+  mount: VAULT_MOUNT_PLACEHOLDER
+  type: kv-v2
+  path: aap/CLUSTER_NAME/database/eda
+  refreshAfter: 1m
+  destination:
+    name: automation-eda-postgres-configuration
+    create: true
+    transformation:
+      templates:
+        host:     { text: '{{- .Secrets.host -}}' }
+        username: { text: '{{- .Secrets.username -}}' }
+        password: { text: '{{- .Secrets.password -}}' }
+        database: { text: 'automationeda' }
+        port:     { text: '5432' }
+        type:     { text: 'unmanaged' }

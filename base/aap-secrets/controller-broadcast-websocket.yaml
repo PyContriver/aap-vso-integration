@@ -1,0 +1,23 @@
+---
+# Source: awx-operator/roles/installer/templates/secrets/broadcast_websocket_secret.yaml.j2
+# Key name confirmed from operator template: 'secret'
+# Vault path: aap/<CLUSTER_NAME>/secrets/controller
+# Vault key: broadcast_websocket_secret (32-char alphanumeric string)
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: automation-controller-broadcast-websocket
+  namespace: ansible-automation-platform
+spec:
+  vaultAuthRef: vault-secrets-operator-system/vault-auth
+  mount: VAULT_MOUNT_PLACEHOLDER
+  type: kv-v2
+  path: aap/CLUSTER_NAME/secrets/controller
+  refreshAfter: 1m
+  destination:
+    name: automation-controller-broadcast-websocket
+    create: true
+    transformation:
+      templates:
+        secret:
+          text: '{{- .Secrets.broadcast_websocket_secret -}}'

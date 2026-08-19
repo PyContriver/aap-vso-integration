@@ -1,0 +1,25 @@
+---
+# Source: galaxy-operator/roles/common/templates/galaxy-db-fields-encryption.secret.yaml.j2
+# Key name confirmed from operator template: 'database_fields.symmetric.key'
+# Value must be a valid Fernet key (base64-encoded 32-byte key)
+# Generate: python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+# Vault path: aap/<CLUSTER_NAME>/encryption/hub
+# Vault key: database_fields_encryption_key (Fernet key value)
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: automation-hub-db-fields-encryption
+  namespace: ansible-automation-platform
+spec:
+  vaultAuthRef: vault-secrets-operator-system/vault-auth
+  mount: VAULT_MOUNT_PLACEHOLDER
+  type: kv-v2
+  path: aap/CLUSTER_NAME/encryption/hub
+  refreshAfter: 1m
+  destination:
+    name: automation-hub-db-fields-encryption
+    create: true
+    transformation:
+      templates:
+        database_fields.symmetric.key:
+          text: '{{- .Secrets.database_fields_encryption_key -}}'

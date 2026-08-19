@@ -1,0 +1,9 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault-connection
+  namespace: vault-secrets-operator-system
+spec:
+  address: VAULT_ADDR_PLACEHOLDER
+  skipTLSVerify: false
