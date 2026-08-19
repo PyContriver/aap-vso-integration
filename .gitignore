@@ -1,0 +1,7 @@
+# Never commit real credentials
+overlays/*/config.env
+overlays/*/config.env.local
+*.token
+*-kubeconfig
+kubeconfig
+.env
