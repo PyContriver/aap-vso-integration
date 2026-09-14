@@ -1,0 +1,10 @@
+---
+# AllNamespaces mode — VSO watches secrets across all namespaces.
+# Required so VaultStaticSecrets in ansible-automation-platform namespace
+# are managed by the VSO controller in vault-secrets-operator-system.
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: vault-secrets-operator-og
+  namespace: vault-secrets-operator-system
+spec: {}

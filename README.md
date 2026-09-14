@@ -105,6 +105,11 @@ aap-vso-integration/
 
 ---
 
+For the long-term architecture of building VSO natively into the AAP operator,
+see [OPERATOR-NATIVE-VSO.md](./OPERATOR-NATIVE-VSO.md).
+
+---
+
 ## Rotation test (proves AC4)
 
 ```bash

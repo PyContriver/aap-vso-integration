@@ -1,0 +1,2 @@
+# ESO FluxCD resources — Phase 3
+# Will mirror flux/vso/ using ExternalSecret CRs and ESO SecretStore instead of VSO.

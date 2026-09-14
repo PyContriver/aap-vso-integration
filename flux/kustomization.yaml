@@ -1,0 +1,14 @@
+---
+# Top-level FluxCD router.
+# Choose the secret provider by applying the relevant subfolder:
+#
+#   VSO (HashiCorp Vault):  oc apply -k flux/vso/
+#   ESO (multi-backend):    oc apply -k flux/eso/   (coming in Phase 3)
+#
+# Both providers share the same Kustomize base (base/aap-operator, aap-cr/).
+# Only the secret sync layer (operator + infra + secrets) differs per provider.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - vso

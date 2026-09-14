@@ -1,0 +1,18 @@
+---
+# FluxCD Kustomization — installs VSO operator via OLM.
+# No dependsOn: applied first, registers VSO CRDs.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: vso-operator
+  namespace: flux-system
+spec:
+  interval: 10m
+  wait: true
+  prune: true
+  suspend: false
+  path: ./base/vso-operator
+  sourceRef:
+    kind: GitRepository
+    name: aap-vso-config
+    namespace: flux-system
