@@ -17,3 +17,4 @@ resources:
   - vault-infra.yaml      # 4. VaultConnection, VaultAuth (dependsOn: vso-operator)
   - aap-secrets.yaml      # 5. VaultStaticSecrets (dependsOn: vault-infra)
   - aap-cr.yaml           # 6. AAP CR (dependsOn: aap-operator + aap-secrets)
+
