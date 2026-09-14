@@ -1,0 +1,59 @@
+---
+# AnsibleAutomationPlatform CR — base (shared across all environments)
+# Contains all VSO-managed secret field references and shared configuration.
+# Environment-specific fields (storage, ingress, replicas) live in overlays.
+#
+# Secret fields confirmed from operator source:
+#   awx-operator/roles/installer/defaults/main.yml
+#   galaxy-operator/roles/common/defaults/main.yml
+#   eda-server-operator/roles/eda/defaults/main.yml
+apiVersion: aap.ansible.com/v1alpha1
+kind: AnsibleAutomationPlatform
+metadata:
+  name: automation-platform
+  namespace: ansible-automation-platform
+spec:
+  no_log: false
+  image_pull_policy: IfNotPresent
+
+  # ── Platform-level secrets ────────────────────────────────────────────────
+  admin_password_secret: automation-platform-admin-password
+  database:
+    database_secret: automation-platform-postgres-configuration
+
+  # ── Automation Controller ─────────────────────────────────────────────────
+  controller:
+    name: automation-controller
+    disabled: false
+    secret_key_secret: automation-controller-secret-key
+    broadcast_websocket_secret: automation-controller-broadcast-websocket
+    admin_password_secret: automation-controller-admin-password
+    postgres_configuration_secret: automation-controller-postgres-configuration
+    auto_upgrade: true
+    create_preload_data: true
+    garbage_collect_secrets: false
+    replicas: 1
+    no_log: true
+
+  # ── Automation Hub ────────────────────────────────────────────────────────
+  hub:
+    name: automation-hub
+    disabled: false
+    admin_password_secret: automation-hub-admin-password
+    postgres_configuration_secret: automation-hub-postgres-configuration
+    db_fields_encryption_secret: automation-hub-db-fields-encryption
+    storage_type: file
+    no_log: true
+
+  # ── Event-Driven Ansible ──────────────────────────────────────────────────
+  eda:
+    name: automation-eda
+    disabled: false
+    admin_password_secret: automation-eda-admin-password
+    db_fields_encryption_secret: automation-eda-db-fields-encryption
+    database:
+      database_secret: automation-eda-postgres-configuration
+
+  # ── Lightspeed (disabled) ─────────────────────────────────────────────────
+  lightspeed:
+    disabled: true
