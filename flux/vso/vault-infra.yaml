@@ -1,0 +1,23 @@
+---
+# FluxCD Kustomization — creates VaultConnection, VaultAuth, ServiceAccount, RBAC.
+# dependsOn vso-operator: VaultConnection/VaultAuth CRDs must exist first.
+# Environment-specific config (Vault address, auth mount, role) is read from
+# the overlay's config.env via configMapGenerator.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: vault-infra
+  namespace: flux-system
+spec:
+  interval: 10m
+  wait: true
+  prune: true
+  suspend: false
+  # Point to the environment-specific overlay so config.env is picked up
+  path: ./overlays/non-saas
+  sourceRef:
+    kind: GitRepository
+    name: aap-vso-config
+    namespace: flux-system
+  dependsOn:
+    - name: vso-operator

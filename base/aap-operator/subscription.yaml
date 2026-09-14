@@ -1,0 +1,14 @@
+---
+# OLM Subscription — installs the AAP operator from redhat-operators catalog.
+# Pin channel to a specific AAP release (e.g. stable-2.5) to avoid unintended upgrades.
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: ansible-automation-platform
+  namespace: ansible-automation-platform-operator
+spec:
+  channel: stable-2.5
+  installPlanApproval: Automatic
+  name: ansible-automation-platform
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace

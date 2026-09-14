@@ -1,0 +1,10 @@
+---
+# OwnNamespace mode — AAP operator watches ansible-automation-platform only.
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: ansible-automation-platform-operator-og
+  namespace: ansible-automation-platform-operator
+spec:
+  targetNamespaces:
+    - ansible-automation-platform

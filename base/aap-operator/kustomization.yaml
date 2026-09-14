@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Apply in order: namespace first, then OperatorGroup, then Subscription.
+sortOptions:
+  order: fifo
+
+resources:
+  - namespace.yaml
+  - operatorgroup.yaml
+  - subscription.yaml

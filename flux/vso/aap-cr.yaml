@@ -1,0 +1,23 @@
+---
+# FluxCD Kustomization — applies the AnsibleAutomationPlatform CR.
+# dependsOn aap-operator: AAP CRD must be registered.
+# dependsOn aap-secrets: all K8s Secrets must exist before the operator reconciles.
+# wait:true blocks until the AnsibleAutomationPlatform CR reaches Ready state.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: aap-cr
+  namespace: flux-system
+spec:
+  interval: 10m
+  wait: true
+  prune: true
+  suspend: false
+  path: ./aap-cr
+  sourceRef:
+    kind: GitRepository
+    name: aap-vso-config
+    namespace: flux-system
+  dependsOn:
+    - name: aap-operator
+    - name: aap-secrets

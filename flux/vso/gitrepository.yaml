@@ -1,0 +1,15 @@
+---
+# FluxCD GitRepository — points to the aap-vso-config Git repo.
+# Update url and secretRef to match your actual repo and credentials.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: aap-vso-config
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/<org>/aap-vso-config   # replace with actual repo URL
+  ref:
+    branch: main
+  secretRef:
+    name: aap-vso-config-auth                     # K8s Secret with Git credentials
