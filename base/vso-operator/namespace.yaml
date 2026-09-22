@@ -1,10 +1,8 @@
 ---
+# Namespace for the VSO operator only.
+# ansible-automation-platform namespace lives in aap-operator/namespace.yaml
+# so it is created alongside the AAP operator, not VSO.
 apiVersion: v1
 kind: Namespace
 metadata:
   name: vault-secrets-operator-system
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ansible-automation-platform
