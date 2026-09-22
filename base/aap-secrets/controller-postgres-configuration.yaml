@@ -32,3 +32,5 @@ spec:
           text: '5432'
         type:
           text: '{{- .Secrets.type | default "unmanaged" -}}'
+        postgres_admin_password:
+          text: '{{- .Secrets.postgres_admin_password -}}'
