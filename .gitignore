@@ -1,7 +1,36 @@
-# Never commit real credentials
-overlays/*/config.env
-overlays/*/config.env.local
+# ── Environment & secrets ──────────────────────────────────────────────────────
+# Never commit actual config.env files — only .example files are committed
+config.env
+**/config.env
+overlays/**/config.env
+
+# Python virtualenv
+env/
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# ── Editor & OS ────────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Secrets & credentials ──────────────────────────────────────────────────────
+# Vault tokens, kubeconfigs, any exported secret YAMLs
 *.token
-*-kubeconfig
 kubeconfig
+secrets-backup.yaml
+*-backup.yaml
 .env
+*.secret
+
+# ── Kustomize build output ─────────────────────────────────────────────────────
+/tmp/
+manifest.yaml
+build-output.yaml
+
+# ── Shell script temp files ────────────────────────────────────────────────────
+*.log
