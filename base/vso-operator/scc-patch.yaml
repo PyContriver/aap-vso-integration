@@ -1,0 +1,14 @@
+---
+# Patch VSO controller deployment to remove fsGroup:1337
+# which violates OCP's restricted-v2 SCC.
+# This is applied by Kustomize as part of the vso-operator base.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-secrets-operator-controller-manager
+  namespace: vault-secrets-operator-system
+spec:
+  template:
+    spec:
+      securityContext:
+        fsGroup: null

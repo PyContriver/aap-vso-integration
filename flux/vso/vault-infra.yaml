@@ -13,11 +13,15 @@ spec:
   wait: true
   prune: true
   suspend: false
-  # Point to the environment-specific overlay so config.env is picked up
-  path: ./overlays/non-saas
+  path: ./base/vault-infra
   sourceRef:
     kind: GitRepository
     name: aap-vso-config
     namespace: flux-system
   dependsOn:
     - name: vso-operator
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: aap-vso-config
+        namespace: flux-system

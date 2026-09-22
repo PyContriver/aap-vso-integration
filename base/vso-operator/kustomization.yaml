@@ -11,3 +11,10 @@ resources:
   - namespace.yaml
   - operatorgroup.yaml
   - subscription.yaml
+
+# Patch VSO deployment for OCP SCC compatibility (removes fsGroup:1337)
+patches:
+  - path: scc-patch.yaml
+    target:
+      kind: Deployment
+      name: vault-secrets-operator-controller-manager

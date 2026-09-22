@@ -10,9 +10,9 @@ metadata:
   namespace: ansible-automation-platform
 spec:
   vaultAuthRef: vault-secrets-operator-system/vault-auth
-  mount: VAULT_MOUNT_PLACEHOLDER
+  mount: ${VAULT_MOUNT}
   type: kv-v2
-  path: aap/CLUSTER_NAME/secrets/controller
+  path: aap/${CLUSTER_NAME}/secrets/controller
   refreshAfter: 1m
   destination:
     name: automation-controller-broadcast-websocket
