@@ -7,3 +7,5 @@ metadata:
 spec:
   address: ${VAULT_ADDR}
   skipTLSVerify: false
+  # HCP Vault requires namespace — set VAULT_NAMESPACE=admin in aap-vso-config Secret
+  namespace: ${VAULT_NAMESPACE}
