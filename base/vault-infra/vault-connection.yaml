@@ -5,5 +5,5 @@ metadata:
   name: vault-connection
   namespace: vault-secrets-operator-system
 spec:
-  address: VAULT_ADDR_PLACEHOLDER
+  address: ${VAULT_ADDR}
   skipTLSVerify: false

@@ -1,6 +1,8 @@
 ---
 # Non-SaaS overlay — all secrets managed by VSO from Vault.
-# Requires: postgres running at aap/<CLUSTER_NAME>/database/* paths in Vault.
+# Config values (VAULT_ADDR, CLUSTER_NAME, etc.) are injected at deploy time
+# via FluxCD postBuild.substituteFrom reading from the aap-vso-config Secret in flux-system.
+# The configMapGenerator and transformers are no longer needed here.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 sortOptions:
@@ -8,14 +10,3 @@ sortOptions:
 
 resources:
   - ../../base
-
-configMapGenerator:
-  - name: config
-    namespace: vault-secrets-operator-system
-    options:
-      disableNameSuffixHash: true
-    envs:
-      - config.env
-
-transformers:
-  - ../../base/transformers

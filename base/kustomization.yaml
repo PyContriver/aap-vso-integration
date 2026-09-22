@@ -17,3 +17,5 @@ resources:
   - aap-operator
   - vault-infra
   - aap-secrets
+# Note: transformers/ directory removed — config injection now done via
+# FluxCD postBuild.substituteFrom reading from aap-vso-config Secret in flux-system
