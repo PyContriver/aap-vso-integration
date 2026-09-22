@@ -7,6 +7,9 @@ metadata:
 spec:
   method: kubernetes
   mount: ${VAULT_K8S_AUTH_MOUNT}
+  # Vault Enterprise / HCP Vault namespace (e.g. 'admin' for HCP Vault)
+  # Leave empty for Vault OSS
+  namespace: ${VAULT_NAMESPACE}
   kubernetes:
     role: ${VAULT_K8S_ROLE}
     serviceAccount: vso-auth-sa
