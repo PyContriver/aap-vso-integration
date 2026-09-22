@@ -1,0 +1,57 @@
+---
+# bootstrap-ocp.yaml
+# Run this ONCE after flux install on OpenShift to fix the SCC issue.
+# Removes fsGroup:1337 from source-controller and notification-controller
+# which violates OCP's restricted-v2 SCC.
+#
+# Usage:
+#   oc apply -f flux/bootstrap-ocp.yaml
+#
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flux-ocp-scc-fix
+  namespace: flux-system
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: flux-ocp-fix-sa
+      containers:
+      - name: fix
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Patching FluxCD deployments for OCP SCC compatibility..."
+          for deploy in source-controller notification-controller; do
+            kubectl patch deployment $deploy -n flux-system \
+              --type=merge \
+              -p '{"spec":{"template":{"spec":{"securityContext":{"fsGroup":null}}}}}'
+            echo "$deploy patched ✓"
+          done
+          echo "Done. Waiting for rollout..."
+          kubectl rollout status deployment/source-controller -n flux-system --timeout=120s
+          kubectl rollout status deployment/notification-controller -n flux-system --timeout=120s
+          echo "FluxCD OCP fix complete ✓"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flux-ocp-fix-sa
+  namespace: flux-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flux-ocp-fix-crb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: flux-ocp-fix-sa
+  namespace: flux-system

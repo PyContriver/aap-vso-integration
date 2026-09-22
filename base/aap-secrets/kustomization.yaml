@@ -20,3 +20,5 @@ resources:
   - eda-admin-password.yaml
   - eda-postgres-configuration.yaml
   - eda-db-fields-encryption.yaml
+  # Verification gate — Job that blocks FluxCD until all K8s Secrets exist
+  - verify-secrets-job.yaml
