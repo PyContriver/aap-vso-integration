@@ -31,4 +31,4 @@ spec:
         port:
           text: '5432'
         type:
-          text: 'unmanaged'
+          text: '{{- .Secrets.type | default "unmanaged" -}}'

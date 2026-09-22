@@ -20,4 +20,4 @@ spec:
         password: { text: '{{- .Secrets.password -}}' }
         database: { text: 'automationeda' }
         port:     { text: '5432' }
-        type:     { text: 'unmanaged' }
+        type:     { text: '{{- .Secrets.type | default "unmanaged" -}}' }
