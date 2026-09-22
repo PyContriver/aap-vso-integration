@@ -7,8 +7,8 @@ metadata:
   name: ansible-automation-platform
   namespace: ansible-automation-platform-operator
 spec:
-  channel: stable-2.5
+  channel: stable-2.7-cluster-scoped
   installPlanApproval: Automatic
-  name: ansible-automation-platform
+  name: ansible-automation-platform-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
