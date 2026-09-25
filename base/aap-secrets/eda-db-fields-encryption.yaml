@@ -21,3 +21,5 @@ spec:
       templates:
         database_fields.symmetric.key:
           text: '{{- .Secrets.database_fields_encryption_key -}}'
+        secret_key:
+          text: '{{- .Secrets.database_fields_encryption_key -}}'
