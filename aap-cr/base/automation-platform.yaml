@@ -28,7 +28,7 @@ spec:
     secret_key_secret: automation-controller-secret-key
     broadcast_websocket_secret: automation-controller-broadcast-websocket
     admin_password_secret: automation-controller-admin-password
-    postgres_configuration_secret: automation-controller-postgres-configuration
+    database_secret: automation-controller-postgres-configuration
     auto_upgrade: true
     create_preload_data: true
     garbage_collect_secrets: false
@@ -40,7 +40,7 @@ spec:
     name: automation-hub
     disabled: false
     admin_password_secret: automation-hub-admin-password
-    postgres_configuration_secret: automation-hub-postgres-configuration
+    database_secret: automation-hub-postgres-configuration
     db_fields_encryption_secret: automation-hub-db-fields-encryption
     storage_type: file
     no_log: true
@@ -51,8 +51,7 @@ spec:
     disabled: false
     admin_password_secret: automation-eda-admin-password
     db_fields_encryption_secret: automation-eda-db-fields-encryption
-    database:
-      database_secret: automation-eda-postgres-configuration
+    database_secret: automation-eda-postgres-configuration
 
   # ── Lightspeed (disabled) ─────────────────────────────────────────────────
   lightspeed:
