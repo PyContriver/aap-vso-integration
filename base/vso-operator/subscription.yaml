@@ -1,0 +1,15 @@
+---
+# OLM Subscription — installs VSO from certified-operators catalog.
+# installPlanApproval: Automatic means OLM installs and upgrades without manual approval.
+# Pin to a specific channel (stable) to avoid unexpected major version upgrades.
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: vault-secrets-operator
+  namespace: vault-secrets-operator-system
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: vault-secrets-operator
+  source: certified-operators
+  sourceNamespace: openshift-marketplace

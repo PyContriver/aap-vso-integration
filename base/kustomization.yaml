@@ -3,6 +3,19 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 sortOptions:
   order: fifo
+
+# Apply order matters:
+#   1. vso-operator  — installs VSO via OLM (registers VSO CRDs)
+#   2. aap-operator  — installs AAP operator via OLM (registers AAP CRDs)
+#   3. vault-infra   — creates VaultConnection, VaultAuth, SA, RBAC (uses VSO CRDs)
+#   4. aap-secrets   — creates VaultStaticSecrets (uses VaultAuth)
+#
+# Note: aap-cr/ is applied separately after secrets are synced.
+# See bootstrap.sh for the two-pass deploy sequence.
 resources:
+  - vso-operator
+  - aap-operator
   - vault-infra
   - aap-secrets
+# Note: transformers/ directory removed — config injection now done via
+# FluxCD postBuild.substituteFrom reading from aap-vso-config Secret in flux-system

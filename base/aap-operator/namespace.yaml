@@ -1,0 +1,12 @@
+---
+# Namespace for the AAP operator itself (OLM installs here)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ansible-automation-platform-operator
+---
+# Namespace for AAP components (Controller, Hub, EDA, Gateway)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ansible-automation-platform

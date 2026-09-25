@@ -11,9 +11,9 @@ metadata:
   namespace: ansible-automation-platform
 spec:
   vaultAuthRef: vault-secrets-operator-system/vault-auth
-  mount: VAULT_MOUNT_PLACEHOLDER
+  mount: ${VAULT_MOUNT}
   type: kv-v2
-  path: aap/CLUSTER_NAME/database/controller
+  path: aap/${CLUSTER_NAME}/database/controller
   refreshAfter: 1m
   destination:
     name: automation-controller-postgres-configuration
@@ -31,4 +31,6 @@ spec:
         port:
           text: '5432'
         type:
-          text: 'unmanaged'
+          text: '{{- .Secrets.type | default "unmanaged" -}}'
+        postgres_admin_password:
+          text: '{{- .Secrets.postgres_admin_password -}}'

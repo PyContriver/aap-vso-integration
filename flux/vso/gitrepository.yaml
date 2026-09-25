@@ -1,0 +1,23 @@
+---
+# FluxCD GitRepository — watches the aap-vso-integration Git repo.
+# For public repos, no secretRef is needed.
+# For private repos, create a K8s Secret with Git credentials and uncomment secretRef:
+#
+#   kubectl create secret generic aap-vso-config-auth \
+#     --from-literal=username=<git-user> \
+#     --from-literal=password=<git-token> \
+#     -n flux-system
+#
+#   Then add to spec:
+#     secretRef:
+#       name: aap-vso-config-auth
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: aap-vso-config
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/PyContriver/aap-vso-integration.git
+  ref:
+    branch: devel

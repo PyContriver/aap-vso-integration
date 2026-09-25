@@ -1,0 +1,20 @@
+---
+# FluxCD resources for the VSO-based secret management stack.
+# Apply with: oc apply -k flux/vso/
+#
+# Dependency order (enforced by FluxCD dependsOn):
+#   gitrepository → vso-operator → aap-operator
+#                               → vault-infra → aap-secrets → aap-cr
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+sortOptions:
+  order: fifo
+
+resources:
+  - gitrepository.yaml    # 1. Git source
+  - vso-operator.yaml     # 2. Install VSO via OLM
+  - aap-operator.yaml     # 3. Install AAP operator via OLM
+  - vault-infra.yaml      # 4. VaultConnection, VaultAuth (dependsOn: vso-operator)
+  - aap-secrets.yaml      # 5. VaultStaticSecrets (dependsOn: vault-infra)
+  - aap-cr.yaml           # 6. AAP CR (dependsOn: aap-operator + aap-secrets)
+

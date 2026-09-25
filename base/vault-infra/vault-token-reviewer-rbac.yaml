@@ -14,3 +14,6 @@ subjects:
   - kind: ServiceAccount
     name: vso-auth-sa
     namespace: vault-secrets-operator-system
+  - kind: ServiceAccount
+    name: vso-auth-sa
+    namespace: ansible-automation-platform

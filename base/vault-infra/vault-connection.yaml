@@ -5,5 +5,7 @@ metadata:
   name: vault-connection
   namespace: vault-secrets-operator-system
 spec:
-  address: VAULT_ADDR_PLACEHOLDER
+  address: ${VAULT_ADDR}
   skipTLSVerify: false
+  # Note: Vault Enterprise / HCP Vault namespace is set on VaultAuth.spec.namespace
+  # NOT here — VSO blocks X-Vault-Namespace in VaultConnection.spec.headers

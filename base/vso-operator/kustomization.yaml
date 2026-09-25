@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Apply in order: namespaces first, then OperatorGroup, then Subscription.
+# OLM requires the namespace and OperatorGroup to exist before the Subscription.
+sortOptions:
+  order: fifo
+
+resources:
+  - namespace.yaml
+  - operatorgroup.yaml
+  - subscription.yaml
+
+# Patch VSO deployment for OCP SCC compatibility (removes fsGroup:1337)
+patches:
+  - path: scc-patch.yaml
+    target:
+      kind: Deployment
+      name: vault-secrets-operator-controller-manager
